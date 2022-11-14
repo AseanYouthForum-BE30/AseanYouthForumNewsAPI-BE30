@@ -62,7 +62,7 @@ module.exports = {
                             id: userData.id,
                             fullName: userData.fullName,
                             isAdmin: userData.isAdmin
-                        }, 'secret', { expiresIn: '1h' }
+                        }, process.env.JWTKEY, { expiresIn: '1h' }
                     )
 
                     res.status(201).json({
