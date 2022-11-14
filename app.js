@@ -1,15 +1,14 @@
 const express = require('express')
-const multer = require('multer')
+require('dotenv').config()
 
 const app = express()
-const upload = multer()
 
-const PORT = 3000
+const PORT = process.env.PORT
 
 const router = require('./routes')
 
 app.use(express.json())
-app.use(upload.array())
+
 app.use(router)
 
 app.listen(PORT, () => {

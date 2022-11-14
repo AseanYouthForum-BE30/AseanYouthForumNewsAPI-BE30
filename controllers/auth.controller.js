@@ -1,39 +1,46 @@
 const model = require('../models')
-const {User, UserDetail} = model
+require('dotenv').config()
 
+const {User, UserDetail} = model
 const bcrypt = require('bcrypt')
 const jwt = require('jsonwebtoken')
+const imgbbUploader = require('imgbb-uploader')
 
 module.exports = {
     register: async (req, res) => {
-        try {
-            const data = await req.body
-            const saltRounds = 10
+        const uploaded_image = await req.file
+        const name_uploaded_image = uploaded_image.originalname.split(".")[0]+ '-' + new Date().getTime()
 
-            const hash = bcrypt.hashSync(data.password, saltRounds)
-            data.password = hash
-
-            try {
-                const user = await User.create({
-                    email: data.email,
-                    password: data.password,
-                    isAdmin: false
-                })
-    
-                UserDetail.create({
-                    fullName: data.fullName,
-                    image: data.image,
-                    countryId: data.countryId,
-                    userId: user.id
-                })
-    
-                res.status(201).json({message: "Account Created"})
-            } catch (error) {
-            res.status(400).json(error)
-            }
-        } catch (error) {
-            res.status(400).json(error)
+        const options = {
+            apiKey: process.env.IMGBBKEY,
+            name: name_uploaded_image,
+            base64string: uploaded_image.buffer.toString('base64')
         }
+
+        const response = await imgbbUploader(options)
+            .then((res) => {
+                return res.url
+            })
+        
+        const data = await req.body
+        const saltRounds = 10
+
+        const hash = bcrypt.hashSync(data.password, saltRounds)
+        data.password = hash
+
+        await User.create({
+            email: data.email,
+            password: data.password,
+            isAdmin: false,
+            UserDetail: {
+                fullName: data.fullName,
+                image: response,
+                countryId: data.countryId,
+            }
+        }, {
+            include: [ UserDetail ]
+        })
+        res.status(201).json({message: "Account Created"})
     },
 
     login: async (req, res) => {
