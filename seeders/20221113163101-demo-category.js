@@ -16,23 +16,28 @@ module.exports = {
     await queryInterface.bulkInsert('Categories', [
       {
         name: "Economy",
-        createdAt: new Date()
+        createdAt: new Date(),
+        updatedAt: new Date()
       },
       {
         name: "Environment",
-        createdAt: new Date()
+        createdAt: new Date(),
+        updatedAt: new Date()
       },
       {
         name: "Health",
-        createdAt: new Date()
+        createdAt: new Date(),
+        updatedAt: new Date()
       },
       {
         name: "Politic",
-        createdAt: new Date()
+        createdAt: new Date(),
+        updatedAt: new Date()
       },
       {
         name: "Other",
-        createdAt: new Date()
+        createdAt: new Date(),
+        updatedAt: new Date()
       },
     ])
   },

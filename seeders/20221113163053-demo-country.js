@@ -16,43 +16,53 @@ module.exports = {
     await queryInterface.bulkInsert('Countries', [
       {
         name: "Brunei Darussalam",
-        createdAt: new Date()
+        createdAt: new Date(),
+        updatedAt: new Date()
       },
       {
         name: "Cambodia",
-        createdAt: new Date()
+        createdAt: new Date(),
+        updatedAt: new Date()
       },
       {
         name: "Indonesia",
-        createdAt: new Date()
+        createdAt: new Date(),
+        updatedAt: new Date()
       },
       {
         name: "Laos",
-        createdAt: new Date()
+        createdAt: new Date(),
+        updatedAt: new Date()
       },
       {
         name: "Malaysia",
-        createdAt: new Date()
+        createdAt: new Date(),
+        updatedAt: new Date()
       },
       {
         name: "Myanmar",
-        createdAt: new Date()
+        createdAt: new Date(),
+        updatedAt: new Date()
       },
       {
         name: "Philippines",
-        createdAt: new Date()
+        createdAt: new Date(),
+        updatedAt: new Date()
       },
       {
         name: "Singapore",
-        createdAt: new Date()
+        createdAt: new Date(),
+        updatedAt: new Date()
       },
       {
         name: "Thailand",
-        createdAt: new Date()
+        createdAt: new Date(),
+        updatedAt: new Date()
       },
       {
         name: "Vietnam",
-        createdAt: new Date()
+        createdAt: new Date(),
+        updatedAt: new Date()
       }
     ])
   },

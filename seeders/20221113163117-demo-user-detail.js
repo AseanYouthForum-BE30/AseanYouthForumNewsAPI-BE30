@@ -19,14 +19,16 @@ module.exports = {
         image: "https://i.ibb.co/37c1FJH/logo-large.png",
         countryId: 3,
         userId: 1,
-        createdAt: new Date()
+        createdAt: new Date(),
+        updatedAt: new Date()
       },
       {
         fullName: "Fabyan Ihsan Sayiq",
         image: "https://i.ibb.co/vk6PhTf/gas-station.jpg",
         countryId: 3,
         userId: 2,
-        createdAt: new Date()
+        createdAt: new Date(),
+        updatedAt: new Date()
       }
     ])
   },
