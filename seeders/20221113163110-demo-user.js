@@ -20,13 +20,15 @@ module.exports = {
         email: "admin@ayfn.com",
         password: bcrypt.hashSync('adminynf', 10),
         isAdmin: true,
-        createdAt: new Date()
+        createdAt: new Date(),
+        updatedAt: new Date()
       },
       {
         email: "anggota@ayfn.com",
         password: bcrypt.hashSync('anggotaaynf', 10),
         isAdmin: false,
-        createdAt: new Date()
+        createdAt: new Date(),
+        updatedAt: new Date()
       }
     ])
   },
