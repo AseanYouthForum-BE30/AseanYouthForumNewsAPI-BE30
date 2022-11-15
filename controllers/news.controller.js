@@ -4,6 +4,8 @@ const { User, UserDetail, Category, Country, News } = model
 require('dotenv').config()
 const jwt = require('jsonwebtoken')
 const imgbbUploader = require('imgbb-uploader')
+const { sequelize } = require('../models')
+const { Op } = require('sequelize')
 
 module.exports = {
     getAllNewsByUser: async(req, res) => {
@@ -320,5 +322,149 @@ module.exports = {
         } else {
             res.status(401).json({message: "Token Required"})
         }
+    },
+
+    getAllNews: async(req, res) => {
+        const news = await News.findAll({
+            order: [
+                ['createdAt', 'DESC']
+            ],
+            where: {
+                isPublished: true
+            },
+            include: [{
+                model: User,
+                attributes: {
+                    exclude: ['password']
+                },
+                include: [UserDetail]
+            },{
+                model: Country
+            },{
+                model: Category
+            }]
+        })
+
+        res.status(200).json(news)
+    },
+
+    getAllNewsByCountry: async(req, res) => {
+        const id = await req.params.id
+
+        const news = await News.findAll({
+            order: [
+                ['createdAt', 'DESC']
+            ],
+            where: {
+                isPublished: true,
+                countryId: id
+            },
+            include: [{
+                model: User,
+                attributes: {
+                    exclude: ['password']
+                },
+                include: [UserDetail]
+            },{
+                model: Country
+            },{
+                model: Category
+            }]
+        })
+
+        res.status(200).json(news)
+    },
+
+    getAllNewsByCategory: async(req, res) => {
+        const id = await req.params.id
+
+        const news = await News.findAll({
+            order: [
+                ['createdAt', 'DESC']
+            ],
+            where: {
+                isPublished: true,
+                categoryId: id
+            },
+            include: [{
+                model: User,
+                attributes: {
+                    exclude: ['password']
+                },
+                include: [UserDetail]
+            },{
+                model: Country
+            },{
+                model: Category
+            }]
+        })
+
+        res.status(200).json(news)
+    },
+
+    getAllNewsByTrend: async(req, res) => {
+        const news = await News.findAll({
+            order: [
+                ['total_like', 'DESC']
+            ],
+            where: {
+                isPublished: true,
+            },
+            include: [{
+                model: User,
+                attributes: {
+                    exclude: ['password']
+                },
+                include: [UserDetail]
+            },{
+                model: Country
+            },{
+                model: Category
+            }]
+        })
+
+        res.status(200).json(news)
+    },
+
+    addLikeToNews: async(req, res) => {
+        const id = req.params.id
+        await News.update({
+            total_like: sequelize.literal('total_like + 1')
+        },{
+            where: {
+                id: id
+            }
+        })
+
+        res.status(200).json({message: "News liked"})
+    },
+
+    searchNewsByTitle: async(req, res) => {
+        const title = req.query.title
+
+        const news = await News.findAll({
+            order: [
+                ['createdAt', 'DESC']
+            ],
+            where: {
+                isPublished: true,
+                title: {
+                    [Op.like]: '%'+title+'%'
+                }
+            },
+            include: [{
+                model: User,
+                attributes: {
+                    exclude: ['password']
+                },
+                include: [UserDetail]
+            },{
+                model: Country
+            },{
+                model: Category
+            }]
+        })
+
+        res.status(200).json(news)
     }
 }

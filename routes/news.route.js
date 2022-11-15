@@ -4,8 +4,9 @@ const multer = require('multer')
 
 const newsRouter = express.Router()
 
-const { getAllNewsByUser, createNewsByUser, getNewsByIdUser, updateNewsByIdUser, deleteNewsByIdUser, getNeedProceedNews, putNeedProceedNews, getProceededNews, putProceededNews } = require('../controllers/news.controller')
+const { getAllNewsByUser, createNewsByUser, getNewsByIdUser, updateNewsByIdUser, deleteNewsByIdUser, getNeedProceedNews, putNeedProceedNews, getProceededNews, putProceededNews, getAllNews, getAllNewsByCountry, getAllNewsByCategory, getAllNewsByTrend, addLikeToNews, searchNewsByTitle } = require('../controllers/news.controller')
 
+// Creator Only
 newsRouter.get('/', getAllNewsByUser)
 newsRouter.post('/', multer().single("image"), [
     check("title")
@@ -28,10 +29,22 @@ newsRouter.post('/', multer().single("image"), [
         next()
     }
 }, createNewsByUser)
+
+// Admin Only
 newsRouter.get('/needProceed', getNeedProceedNews)
 newsRouter.get('/proceeded', getProceededNews)
 newsRouter.put('/proceed/:id', putNeedProceedNews)
 newsRouter.put('/unproceed/:id', putProceededNews)
+
+// Public
+newsRouter.get('/all', getAllNews)
+newsRouter.get('/all/trend', getAllNewsByTrend)
+newsRouter.get('/all/country/:id', getAllNewsByCountry)
+newsRouter.get('/all/category/:id', getAllNewsByCategory)
+newsRouter.get('/like/:id', addLikeToNews)
+newsRouter.get('/search', searchNewsByTitle)
+
+// Admin and Creator Only
 newsRouter.get('/:id', getNewsByIdUser)
 newsRouter.put('/:id', multer().single("image"), [
     check("title")
