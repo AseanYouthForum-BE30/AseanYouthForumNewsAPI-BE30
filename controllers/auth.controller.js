@@ -48,6 +48,7 @@ module.exports = {
             const data = await req.body
 
             const userData = await User.findOne({
+                include: [UserDetail],
                 where: {
                     email: data.email
                 }
@@ -55,12 +56,15 @@ module.exports = {
 
             if (userData){
                 const check = bcrypt.compareSync(data.password, userData.password)
-
+                
                 if (check){
                     const token = jwt.sign(
                         {
                             id: userData.id,
-                            fullName: userData.fullName,
+                            email: userData.email,
+                            fullName: userData.UserDetail.fullName,
+                            image: userData.UserDetail.image,
+                            countryId: userData.UserDetail.countryId,
                             isAdmin: userData.isAdmin
                         }, process.env.JWTKEY, { expiresIn: '1h' }
                     )
